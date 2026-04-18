@@ -1,0 +1,11 @@
+FROM python:3.9-slim-bullseye
+
+RUN apt-get update && apt-get install -y libasound2 python3-dev gcc && rm -rf /var/lib/apt/lists/*
+RUN pip3 install --no-cache-dir vosk wyoming
+
+COPY run.py /run.py
+COPY model /model
+
+WORKDIR /
+# Флаг -u отключает буферизацию. Без него логов в HA не будет!
+CMD [ "python3", "-u", "/run.py" ]
